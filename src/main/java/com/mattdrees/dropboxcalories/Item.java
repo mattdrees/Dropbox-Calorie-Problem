@@ -1,5 +1,8 @@
 package com.mattdrees.dropboxcalories;
 
+import lombok.Data;
+
+@Data
 public class Item {
 	
 	public final String name;
