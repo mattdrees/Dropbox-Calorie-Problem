@@ -14,6 +14,14 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
 
+/**
+ * The heart of the solution to the Dropbox diet problem.
+ * 
+ * This algorithm is an embellishment of the dynamic programming approach described at
+ * http://en.wikipedia.org/wiki/Subset_sum_problem#Pseudo-polynomial_time_dynamic_programming_solution
+ * 
+ * @author Matt Drees
+ */
 public class ProblemSolver {
 
 	final Problem problem;
