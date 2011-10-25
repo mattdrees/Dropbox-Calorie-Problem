@@ -18,7 +18,7 @@ public class SumSetSolver implements Callable<SortedSet<Integer>>{
 	private final int magnitude;
 	private final List<Item> items;
 	
-	private final BiMap<Item, Round> rounds;
+	final BiMap<Item, Round> rounds;
 
 	public SumSetSolver(Set<Item> items, int magnitude) {
 		this.items = Lists.newArrayList(items);
