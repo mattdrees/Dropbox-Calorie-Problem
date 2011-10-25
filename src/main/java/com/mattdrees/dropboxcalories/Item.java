@@ -1,10 +1,9 @@
 package com.mattdrees.dropboxcalories;
 
-import com.google.common.base.Objects;
+import lombok.Data;
+
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.Ints;
-
-import lombok.Data;
 
 @Data
 public class Item implements Comparable<Item>
