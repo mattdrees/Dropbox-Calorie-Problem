@@ -53,6 +53,9 @@ public class ProblemSolver {
 		
 		int smallerMagnitude = Math.min(negativeSumMagnitude, positiveSumMagnitude);
 		
+		if (smallerMagnitude == 0)
+		    return Solution.NO_SOLUTION;
+		
 		SumSetSolver negativeSolver = new SumSetSolver(invert(negativeItems), smallerMagnitude);
 		SumSetSolver positiveSolver = new SumSetSolver(positiveItems, smallerMagnitude);
 		
@@ -83,13 +86,20 @@ public class ProblemSolver {
 			SumSetSolver positiveSolver) throws InterruptedException,
 			ExecutionException {
 		ExecutorService executorService = Executors.newCachedThreadPool();
-		Future<SortedSet<Integer>> negativeSumsFuture = executorService.submit(negativeSolver);
-		Future<SortedSet<Integer>> positiveSumsFuture = executorService.submit(positiveSolver);
-		
-		SortedSet<Integer> negativeSums = negativeSumsFuture.get();
-		SortedSet<Integer> positiveSums = positiveSumsFuture.get();
-		
-		return findCommonSum(negativeSums, positiveSums);
+		try
+		{
+    		Future<SortedSet<Integer>> negativeSumsFuture = executorService.submit(negativeSolver);
+    		Future<SortedSet<Integer>> positiveSumsFuture = executorService.submit(positiveSolver);
+    		
+    		SortedSet<Integer> negativeSums = negativeSumsFuture.get();
+    		SortedSet<Integer> positiveSums = positiveSumsFuture.get();
+    		
+    		return findCommonSum(negativeSums, positiveSums);
+		}
+		finally
+		{
+	        executorService.shutdown();
+		}
 	}
 
 	private Integer findCommonSum(SortedSet<Integer> negativeSums, SortedSet<Integer> positiveSums) {
