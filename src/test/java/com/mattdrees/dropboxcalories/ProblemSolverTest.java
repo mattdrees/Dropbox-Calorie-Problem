@@ -4,9 +4,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import org.testng.annotations.Test;
+
+import com.google.common.collect.ImmutableSet;
 
 public class ProblemSolverTest {
 	
@@ -40,6 +43,37 @@ public class ProblemSolverTest {
 	    
 	    assertThat(solution, not(equalTo(Solution.NO_SOLUTION)));
 	    assertThat(solution.items, equalTo(problem.items));
+	}
+	
+	// from the second test case at http://www.dropbox.com/jobs/challenges#the-dropbox-diet
+	@Test
+	public void testMediumProblemWithSolution() throws InterruptedException, ExecutionException
+	{
+	    problem = new Problem();
+        problem.items.add(new Item("free-lunch", 802));
+        problem.items.add(new Item("mixed-nuts", 421));
+        problem.items.add(new Item("orange-juice", 143));
+        problem.items.add(new Item("heavy-ddr-session", -302));
+        problem.items.add(new Item("cheese-snacks", 137));
+        problem.items.add(new Item("cookies", 316));
+        problem.items.add(new Item("mexican-coke", 150));
+        problem.items.add(new Item("dropballers-basketball", -611));
+        problem.items.add(new Item("coding-six-hours", -466));
+        problem.items.add(new Item("riding-scooter", -42));
+        problem.items.add(new Item("rock-band", -195));
+        problem.items.add(new Item("playing-drums", -295));
+	    
+	    ProblemSolver solver = new ProblemSolver(problem);
+	    Solution solution = solver.solve();
+	    
+	    Set<Item> expectedSolution = ImmutableSet.of(
+	        new Item("coding-six-hours", -466),
+	        new Item("cookies", 316),
+	        new Item("mexican-coke", 150)
+	        );
+	    
+	    assertThat(solution, not(equalTo(Solution.NO_SOLUTION)));
+	    assertThat(solution.items, equalTo(expectedSolution));
 	}
 
 
