@@ -61,16 +61,15 @@ public class SumSetSolver implements Callable<SortedSet<Integer>>{
 		return newRound;
 	}
 
-	public Set<Item> getItemsSummingTo(Integer commonSum) {
+	public Set<Item> getItemsSummingTo(Integer targetSum) {
 		Set<Item> solutionItems = Sets.newHashSet();
 		
 		//TODO: this is ugly.  Need to make nicer.
-		int workingSum = commonSum;
-		Round previousRound = null;
-		Item previousItem = null;
-		for (Item item : Lists.reverse(items))
+		int workingSum = targetSum;
+		List<Item> reversedItems = Lists.reverse(items);
+		int previousItemIndex = 0;
+        for (Item item : reversedItems)
 		{
-			
 			if (item.calories == workingSum)
 			{
 				solutionItems.add(item);
@@ -78,21 +77,18 @@ public class SumSetSolver implements Callable<SortedSet<Integer>>{
 			}
 			else
 			{
-				if (previousRound != null) {
-					Round smallerRound = rounds.get(item);
-					if (smallerRound.sums.contains(workingSum))
-					{
-						//previous item is not needed in the solution set
-					}
-					else
-					{
-						solutionItems.add(previousItem);
-						workingSum -= previousItem.calories;
-					}
-				}
+			    assert rounds.get(item).sums.contains(workingSum);
+	            previousItemIndex++;
+	            assert previousItemIndex < reversedItems.size();
+			    Item previousItem = reversedItems.get(previousItemIndex);
+			    Round previousRound = rounds.get(previousItem);
 				
-				previousRound = rounds.get(item);
-				previousItem = item;
+				if (!previousRound.sums.contains(workingSum))
+				/* this means that the workingSum cannot be achieved without the current item */
+                {
+					solutionItems.add(item);
+					workingSum -= item.calories;
+				}
 			}
 		}
 		throw new AssertionError("Shouldn't be able to get here; working sum: " + workingSum);

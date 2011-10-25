@@ -55,7 +55,7 @@ public class ProblemSolver {
 		Set<Item> negativeSolutionItems = negativeSolver.getItemsSummingTo(commonSum);
 		Set<Item> positiveSolutionItems = positiveSolver.getItemsSummingTo(commonSum);
 		
-		return Solution.of(Sets.union(negativeSolutionItems, positiveSolutionItems));
+		return Solution.of(Sets.union(invert(negativeSolutionItems), positiveSolutionItems));
 	}
 
 	/**
@@ -81,8 +81,7 @@ public class ProblemSolver {
 		SortedSet<Integer> negativeSums = negativeSumsFuture.get();
 		SortedSet<Integer> positiveSums = positiveSumsFuture.get();
 		
-		Integer commonSum = findCommonSum(negativeSums, positiveSums);
-		return commonSum;
+		return findCommonSum(negativeSums, positiveSums);
 	}
 
 	private Integer findCommonSum(SortedSet<Integer> negativeSums, SortedSet<Integer> positiveSums) {
