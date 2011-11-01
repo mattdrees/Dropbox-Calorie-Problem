@@ -8,6 +8,7 @@ import java.util.concurrent.Callable;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -42,7 +43,7 @@ public class SumSetSolver implements Callable<SortedSet<Integer>>{
     			previousRound = newRound;
 		    }
 		}
-		return previousRound.sums;
+		return previousRound == null ? ImmutableSortedSet.<Integer>of() : previousRound.sums;
 	}
 
 	
