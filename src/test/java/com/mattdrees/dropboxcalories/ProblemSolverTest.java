@@ -77,5 +77,25 @@ public class ProblemSolverTest {
 	}
 
 
+    @Test
+    public void testLargeProblemWithLargeSolution() throws InterruptedException, ExecutionException
+    {
+        problem = new Problem();
+        for (int i = 0; i < 23; i++)
+        {
+            problem.items.add(new Item("food" + i, 27));
+        }
+        for (int i = 0; i < 27; i++)
+        {
+            problem.items.add(new Item("excercise" + i, -23));
+        }
+        
+        ProblemSolver solver = new ProblemSolver(problem);
+        Solution solution = solver.solve();
+        
+        assertThat(solution, not(equalTo(Solution.NO_SOLUTION)));
+        assertThat(solution.items, equalTo(problem.items));
+    }
+    
 
 }
