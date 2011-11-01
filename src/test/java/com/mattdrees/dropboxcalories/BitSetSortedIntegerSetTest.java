@@ -47,6 +47,16 @@ public class BitSetSortedIntegerSetTest
     }
     
     @Test
+    public void testAddTwice()
+    {
+        BitSetSortedIntegerSet set1 = new BitSetSortedIntegerSet(100);
+        set1.add(6);
+        set1.add(6);
+        assertThat(set1.size(), equalTo(1));
+        assertThat(set1.contains(6), equalTo(true));
+    }
+    
+    @Test
     public void testRemove()
     {
         BitSetSortedIntegerSet set1 = new BitSetSortedIntegerSet(100);

@@ -136,8 +136,11 @@ public class BitSetSortedIntegerSet extends AbstractSet<Integer> implements Sort
         if (newInt > max)
             throw new IllegalArgumentException("can't add " + newInt + "; max is " + max);
         boolean changed = !bitSet.get(newInt);
-        bitSet.set(newInt);
-        size++;
+        if (changed)
+        {
+            bitSet.set(newInt);
+            size++;
+        }
         return changed;
     }
 
