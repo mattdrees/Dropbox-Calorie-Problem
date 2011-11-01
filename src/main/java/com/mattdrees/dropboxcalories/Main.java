@@ -13,20 +13,24 @@ public class Main
     
     public static void main(String[] args) throws IOException, InterruptedException, ExecutionException
     {
-        Stopwatch stopwatch = new Stopwatch();
-        stopwatch.start();
+        Stopwatch internalExecutionStopwatch = new Stopwatch();
+        internalExecutionStopwatch.start();
         ProblemReader reader = new ProblemReader();
         Problem problem = reader.readFrom(new BufferedReader(new InputStreamReader(System.in)));
         
         ProblemSolver solver = new ProblemSolver(problem);
+        Stopwatch solutionStopwatch = new Stopwatch();
+        solutionStopwatch.start();
         Solution solution = solver.solve();
+        solutionStopwatch.stop();
         
         SolutionWriter writer = new SolutionWriter();
         PrintWriter printWriter = new PrintWriter(System.out);
         writer.writeSolution(solution, printWriter);
         printWriter.flush();
-        stopwatch.stop();
-        System.err.println("Internal execution time: " + stopwatch.toString());
+        internalExecutionStopwatch.stop();
+        System.err.println("Internal execution time: " + internalExecutionStopwatch.toString());
+        System.err.println("Solution execution time: " + solutionStopwatch.toString());
     }
 
 }
