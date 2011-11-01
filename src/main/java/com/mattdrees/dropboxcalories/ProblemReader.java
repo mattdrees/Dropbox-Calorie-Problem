@@ -13,7 +13,11 @@ public class ProblemReader
 		for (int i = 0; i < count; i++)
 		{
 			String line = reader.readLine();
-			problem.items.add(parseItem(line));
+			boolean wasNewItem = problem.items.add(parseItem(line));
+			if (!wasNewItem)
+			{
+			    throw new IllegalArgumentException("invalid problem; " + line + " shows up twice");
+			}
 		}
 		return problem;
 	}
