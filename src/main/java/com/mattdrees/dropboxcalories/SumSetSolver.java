@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.concurrent.Callable;
 
 import com.google.common.collect.BiMap;
@@ -18,10 +17,13 @@ public class SumSetSolver implements Callable<SortedSet<Integer>>{
 	private final int magnitude;
 	private final List<Item> items;
 	
+	private final RoundBuildingStrategy strategy;
+	
 	final BiMap<Item, Round> rounds;
 
-	public SumSetSolver(Set<Item> items, int magnitude) {
-		this.items = Lists.newArrayList(items);
+	public SumSetSolver(Set<Item> items, int magnitude, RoundBuildingStrategy strategy) {
+		this.strategy = strategy;
+        this.items = Lists.newArrayList(items);
 		Collections.sort(this.items);
 		this.magnitude = magnitude;
 		rounds = HashBiMap.create(items.size());
@@ -32,34 +34,18 @@ public class SumSetSolver implements Callable<SortedSet<Integer>>{
 		Round previousRound = null;
 		for (Item item : items)
 		{
-			Round newRound = buildFromPreviousRound(previousRound, item);
-			rounds.put(item, newRound);
-			previousRound = newRound;
+		    if (item.calories <= magnitude)
+		        //otherwise, there's no point to considering the item
+		    {
+    			Round newRound = strategy.buildFromPreviousRound(previousRound, item, magnitude);
+    			rounds.put(item, newRound);
+    			previousRound = newRound;
+		    }
 		}
 		return previousRound.sums;
 	}
 
 	
-	
-	private Round buildFromPreviousRound(Round previousRound, Item item) {
-		Round newRound = new Round(new TreeSet<Integer>());
-		newRound.sums.add(item.calories);
-		if (previousRound == null)
-		{
-			return newRound;
-		}
-		for (int sum : previousRound)
-		{
-			newRound.sums.add(sum);
-			int newSum = sum + item.calories;
-			if (newSum <= magnitude)
-			{
-				newRound.sums.add(newSum);
-			}
-		}
-		
-		return newRound;
-	}
 
 	public Set<Item> getItemsSummingTo(Integer targetSum) {
 		Set<Item> solutionItems = Sets.newHashSet();

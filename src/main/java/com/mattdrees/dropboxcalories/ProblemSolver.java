@@ -26,6 +26,8 @@ public class ProblemSolver {
 
 	final Problem problem;
 
+    RoundBuildingStrategy strategy = RoundBuildingStrategy.BITSET_STRATEGY;
+    
 	public ProblemSolver(Problem problem) {
 		this.problem = problem;
 	}
@@ -56,8 +58,8 @@ public class ProblemSolver {
 		if (smallerMagnitude == 0)
 		    return Solution.NO_SOLUTION;
 		
-		SumSetSolver negativeSolver = new SumSetSolver(invert(negativeItems), smallerMagnitude);
-		SumSetSolver positiveSolver = new SumSetSolver(positiveItems, smallerMagnitude);
+        SumSetSolver negativeSolver = new SumSetSolver(invert(negativeItems), smallerMagnitude, strategy);
+		SumSetSolver positiveSolver = new SumSetSolver(positiveItems, smallerMagnitude, strategy);
 		
 		Integer commonSum = findCommonSum(negativeSolver, positiveSolver);
 		if (commonSum == null)

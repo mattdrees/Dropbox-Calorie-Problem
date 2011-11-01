@@ -20,4 +20,9 @@ public class Solution {
 		return new Solution(items);
 	}
 	
+	@Override
+	public String toString()
+	{
+	    return items == null ? "No Solution" : items.toString();
+	}
 }

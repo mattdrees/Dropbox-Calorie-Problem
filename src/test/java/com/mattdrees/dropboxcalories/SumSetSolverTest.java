@@ -16,11 +16,12 @@ public class SumSetSolverTest
     public void testGetItemsSummingTo()
     {
         
-        int notused = 10;
         Item gumdrop = new Item("gumdrop", 10);
         Item yorkPatty = new Item("york patty", 25);
         Set<Item> items = ImmutableSet.of(gumdrop, yorkPatty);
-        SumSetSolver solver = new SumSetSolver(items, notused);
+        int unusedMagnitude = 10;
+        RoundBuildingStrategy unusedStrategy = RoundBuildingStrategy.TREE_SET_STRATEGY;
+        SumSetSolver solver = new SumSetSolver(items, unusedMagnitude, unusedStrategy);
         
         solver.rounds.put(gumdrop, new Round(ImmutableSortedSet.of(10)));
         solver.rounds.put(yorkPatty, new Round(ImmutableSortedSet.of(10, 25, 35)));
