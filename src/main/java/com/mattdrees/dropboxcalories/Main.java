@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.google.common.base.Stopwatch;
 
@@ -18,10 +20,19 @@ public class Main
         ProblemReader reader = new ProblemReader();
         Problem problem = reader.readFrom(new BufferedReader(new InputStreamReader(System.in)));
         
-        ProblemSolver solver = new ProblemSolver(problem);
         Stopwatch solutionStopwatch = new Stopwatch();
         solutionStopwatch.start();
-        Solution solution = solver.solve();
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        Solution solution;
+        try
+        {
+            ProblemSolver solver = new ProblemSolver(problem, RoundBuildingStrategy.BITSET_STRATEGY,  executorService);
+            solution = solver.solve();
+        }
+        finally
+        {
+            executorService.shutdown();
+        }
         solutionStopwatch.stop();
         
         SolutionWriter writer = new SolutionWriter();

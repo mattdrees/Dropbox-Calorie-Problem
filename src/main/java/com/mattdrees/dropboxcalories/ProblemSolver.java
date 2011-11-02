@@ -26,10 +26,14 @@ public class ProblemSolver {
 
 	final Problem problem;
 
-    RoundBuildingStrategy strategy = RoundBuildingStrategy.BITSET_STRATEGY;
+    RoundBuildingStrategy strategy;
+
+    ExecutorService executorService;
     
-	public ProblemSolver(Problem problem) {
+	public ProblemSolver(Problem problem, RoundBuildingStrategy strategy, ExecutorService executorService) {
 		this.problem = problem;
+        this.strategy = strategy;
+        this.executorService = executorService;
 	}
 	
 	public Solution solve() throws InterruptedException, ExecutionException
@@ -87,9 +91,7 @@ public class ProblemSolver {
 	private Integer findCommonSum(SumSetSolver negativeSolver,
 			SumSetSolver positiveSolver) throws InterruptedException,
 			ExecutionException {
-		ExecutorService executorService = Executors.newCachedThreadPool();
-		try
-		{
+	    
     		Future<SortedSet<Integer>> negativeSumsFuture = executorService.submit(negativeSolver);
     		Future<SortedSet<Integer>> positiveSumsFuture = executorService.submit(positiveSolver);
     		
@@ -97,11 +99,6 @@ public class ProblemSolver {
     		SortedSet<Integer> positiveSums = positiveSumsFuture.get();
     		
     		return findCommonSum(negativeSums, positiveSums);
-		}
-		finally
-		{
-	        executorService.shutdown();
-		}
 	}
 
 	private Integer findCommonSum(SortedSet<Integer> negativeSums, SortedSet<Integer> positiveSums) {
